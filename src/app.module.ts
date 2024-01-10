@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { SearchModule } from './search/search.module';
 import { EmailModule } from './email/email.module';
 import { InventarioModule } from './inventario/inventario.module';
+import { MantenimientoModule } from './mantenimiento/mantenimiento.module';
 
 
 
@@ -17,11 +18,11 @@ import { InventarioModule } from './inventario/inventario.module';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host:'****',
-      port:7431,
-      database:'***',
-      username:'****',
-      password:'*******',
+      host:'',
+      port:36080,
+      database:'',
+      username:'',
+      password:'',
       // host: process.env.HOST,
       // port: +process.env.DB_PORT,
       // database: process.env.NAME,
@@ -37,7 +38,8 @@ import { InventarioModule } from './inventario/inventario.module';
     AuthModule,
     SearchModule,
     EmailModule,
-    InventarioModule, 
+    InventarioModule,
+    MantenimientoModule, 
   ],
 
 })

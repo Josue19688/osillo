@@ -3,6 +3,7 @@ import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany
 import { UserImage } from "./user-image.entity";
 import { Inventario } from "src/inventario/entities/inventario.entity";
 import { InventarioImage } from "src/inventario/entities/inventario-image.entity";
+import { Mantenimiento } from "src/mantenimiento/entities/mantenimiento.entity";
 
 
 
@@ -78,8 +79,13 @@ export class User {
     )
     inventarioImage:InventarioImage;
 
-    
+    //TODO:Relaciones para el mantenimiento
    
+    @OneToMany(
+        ()=>Mantenimiento,
+        (mantenimiento)=>mantenimiento.user
+    )
+    mantenimiento:Mantenimiento;
 
     
 

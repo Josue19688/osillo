@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { User } from "src/auth/entities/user.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { InventarioImage } from "./inventario-image.entity";
+import { Mantenimiento } from "src/mantenimiento/entities/mantenimiento.entity";
 
 
 
@@ -17,16 +18,22 @@ export class Inventario {
 
     @ApiProperty({
         example:'MJ06AA2P',
-        description:'Service tag del equipo'
+        description:'Service tag del equipo',
+        uniqueItems:true
     })
-    @Column('text')
+    @Column('text',{
+        unique:true
+    })
     serviceTag:string;
 
     @ApiProperty({
         example:'00055SDF',
-        description:'Numero de inventario del equipo'
+        description:'Numero de inventario del equipo',
+        uniqueItems:true
     })
-    @Column('text')
+    @Column('text',{
+        unique:true
+    })
     numeroInventario:string;
 
     @ApiProperty({
@@ -41,11 +48,32 @@ export class Inventario {
     asignado?:string;
 
     @ApiProperty({
+        example:'Laptop',
+        description:'tipo de equipo de computo'
+    })
+    @Column('text')
+    tipo:string;
+
+    @ApiProperty({
+        example:'HP',
+        description:'Marca del equipo'
+    })
+    @Column('text')
+    marca:string;
+
+    @ApiProperty({
         example:'Informatica',
         description:'Nombre de la division donde esta asignado'
     })
     @Column('text')
     division:string;
+
+    @ApiProperty({
+        example:'zona 4',
+        description:'sede donde esta ubicada'
+    })
+    @Column('text')
+    sede:string;
 
     @ApiProperty({
         example:'desarrollo',
@@ -104,4 +132,13 @@ export class Inventario {
         {eager:true}
     )
     user:User;
+
+
+    //TODO:Relaciones para el mantenimiento
+   
+    @OneToMany(
+        ()=>Mantenimiento,
+        (mantenimiento)=>mantenimiento.user
+    )
+    mantenimiento:Mantenimiento;
 }
