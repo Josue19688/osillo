@@ -5,6 +5,8 @@ import { GraficaModeloDto } from 'src/common/dto/graficaModelo.tdo';
 import { SearchDto } from 'src/common/dto/search.dto';
 import { SearchFindAllDto } from 'src/common/dto/searchFindAll.dto';
 import { SearchTerminoDto } from 'src/common/dto/searchTermino.dto';
+import { Inventario } from 'src/inventario/entities/inventario.entity';
+import { Mantenimiento } from 'src/mantenimiento/entities/mantenimiento.entity';
 
 
 
@@ -19,6 +21,10 @@ export class SearchService {
     
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Mantenimiento)
+    private readonly mantenimientoRepository: Repository<Mantenimiento>,
+    @InjectRepository(Inventario)
+    private readonly inventarioRepository: Repository<Inventario>,
   ) { }
 
 
@@ -33,7 +39,7 @@ export class SearchService {
   async findAllModelsDate(searchDto: SearchDto) {
     const { inicio, fin, modelo } = searchDto;
 
-    const modelos = ['usuario', 'producto', 'novedad', 'agente', 'visita', 'archivo'];
+    const modelos = ['usuario', 'mantenimiento', 'inventario'];
 
     if (!modelos.includes(modelo)) throw new BadRequestException('Models NotFound...');
 
@@ -53,6 +59,20 @@ export class SearchService {
           }
         })
         break;
+      case 'mantenimiento':
+          data = await this.mantenimientoRepository.find({
+            where: {
+              fecha: Between(
+                new Date(inicio),
+                new Date(fin)
+              ),
+            },
+            relations: {
+              inventario: true,
+              user:true
+            }
+          })
+          break;
       default:
         return { ok: false, msg: 'Collecion no encontrada' };
 
@@ -66,7 +86,7 @@ export class SearchService {
 
     const { modelo, termino, inicio, fin } = searchTerminoDto;
 
-    const modelos = ['usuario', 'producto', 'novedad', 'agente', 'visita', 'archivo'];
+    const modelos = ['usuario', 'mantenimiento'];
 
     if (!modelos.includes(modelo)) throw new BadRequestException('Models NotFound...');
 
@@ -88,6 +108,34 @@ export class SearchService {
           }
         })
         break;
+      case 'mantenimiento':
+
+        const mantenimiento = await this.mantenimientoRepository.find({
+          where: [
+            {
+              inventario: Like(`%${termino}%`)
+            },
+            {
+              fecha: Between(
+                new Date(inicio),
+                new Date(fin)
+              ) ,
+            }
+          ],
+          relations: {
+            inventario:true,
+            user: true
+          }
+        })
+
+        data = mantenimiento.map(mantenimiento => ({
+          ...mantenimiento,
+          
+        }))
+
+        break;
+
+        
       default:
         return { ok: false, msg: 'Collecion no encontrada' };
 

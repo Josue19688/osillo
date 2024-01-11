@@ -51,11 +51,11 @@ export class Mantenimiento {
     tipoServicio:string;
 
     @ApiProperty({
-        example:'10/10/2010',
-        description:'fecha de soporte'
+        example: '2023-10-10',
+        description: 'Fecha del suceso'
     })
-    @Column('text')
-    fecha:string;
+    @Column({ type: 'timestamptz',default: () => "CURRENT_TIMESTAMP(6)"  })
+    fecha: Date;
 
     @ApiProperty({
         example:'josoy ',

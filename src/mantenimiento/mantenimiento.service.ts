@@ -21,10 +21,11 @@ export class MantenimientoService {
 
   async create(createMantenimientoDto: CreateMantenimientoDto, user:User) {
     try {
-      const { ...mantenimientoDetails} = createMantenimientoDto;
+      const {inventario, ...mantenimientoDetails} = createMantenimientoDto;
       const mantenimiento = this.mantenimientoRepository.create({
         ...mantenimientoDetails,
-        user
+        user,
+        inventario
       });
 
       await this.mantenimientoRepository.save(mantenimiento);
@@ -37,16 +38,16 @@ export class MantenimientoService {
 
   async findAll(paginationDto:PaginationDto) {
     const { limit = 10, offset = 0 } = paginationDto;
-    const inventario = await this.mantenimientoRepository.find({
+    const mantenimiento = await this.mantenimientoRepository.find({
       take:limit,
       skip:offset,
     })
 
-    const inventarios = inventario.map(item=>({
+    const matenimientos = mantenimiento.map(item=>({
       ...item
     }))
 
-    return {ok:true, inventarios};
+    return {ok:true, matenimientos};
   }
 
   async findOne(termino:string) {
@@ -85,10 +86,11 @@ export class MantenimientoService {
   }
 
   async update(id: string, updateMantenimientoDto: UpdateMantenimientoDto, user:User) {
-    const { ...toUpdate } = updateMantenimientoDto;
+    const {inventario, ...toUpdate } = updateMantenimientoDto;
     const mantenimiento = await this.mantenimientoRepository.preload({
       id,
-      ...toUpdate
+      ...toUpdate,
+      inventario
     });
 
     if (!mantenimiento) throw new NotFoundException(`El registro con ${id} no existe`);

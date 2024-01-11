@@ -26,7 +26,7 @@ export class CreateInventarioDto {
     })
     @IsString()
     @IsOptional()
-    asignado:string;
+    asignado?:string;
 
     @ApiProperty({
         description:'Tipo de equipo',
@@ -58,7 +58,15 @@ export class CreateInventarioDto {
     })
     @IsString()
     @IsOptional()
-    departamento:string;
+    departamento?:string;
+
+    @ApiProperty({
+        description:'Sede asignado el equipo',
+        minLength:1
+    })
+    @IsString()
+    @IsOptional()
+    sede?:string;
 
     @ApiProperty({
         description:'Ubicacion actual del equipo',
@@ -66,7 +74,7 @@ export class CreateInventarioDto {
     })
     @IsString()
     @IsOptional()
-    ubicacion:string;
+    ubicacion?:string;
 
     @ApiProperty({
         description:'Descripcion del equipo',

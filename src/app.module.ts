@@ -19,7 +19,7 @@ import { MantenimientoModule } from './mantenimiento/mantenimiento.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host:'',
-      port:36080,
+      port:1111,
       database:'',
       username:'',
       password:'',

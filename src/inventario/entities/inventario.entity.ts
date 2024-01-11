@@ -72,7 +72,11 @@ export class Inventario {
         example:'zona 4',
         description:'sede donde esta ubicada'
     })
-    @Column('text')
+    @Column({
+        type:'text',
+        nullable:true,
+        
+    })
     sede:string;
 
     @ApiProperty({
